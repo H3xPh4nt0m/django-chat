@@ -57,16 +57,17 @@
 
     .message-row {
         display: flex;
-        margin-bottom: 8px;
+        width: 100%;
+        margin-bottom: 10px;
     }
 
     .message-bubble {
-        padding: 10px 15px;
-        border-radius: 20px;
+        padding: 12px 18px;
+        border-radius: 22px;
         max-width: 90%;
-        font-size: 0.95rem;
-        position: relative;
-        word-wrap: break-word;
+        font-size: 1rem;
+        line-height: 1.5;
+        word-break: break-word;
     }
 
     /* Sent message */
@@ -128,10 +129,9 @@
 
     <!-- Header -->
     <div class="chat-header">
-        <img src="https://via.placeholder.com/45" alt="User">
+        <img src="https://via.placeholder.com/45" alt="">
         <div>
-            <div class="name">John Doe</div>
-            <div class="status">Online</div>
+            <div class="name">{{ receiver.first_name }} {{ receiver.last_name }}</div>
         </div>
     </div>
 
@@ -142,10 +142,8 @@
 
             {% if message.sender == request.user %}
                 <div class="message-row sent">
-                    <div>
-                        <div class="message-bubble">
-                            {{ message.content }}
-                        </div>
+                    <div class="message-bubble">
+                        {{ message.content }}
                         <div class="timestamp">
                             {{ message.timestamp|date:"h:i A" }}
                         </div>
@@ -153,10 +151,8 @@
                 </div>
             {% else %}
                 <div class="message-row received">
-                    <div>
-                        <div class="message-bubble">
-                            {{ message.content }}
-                        </div>
+                    <div class="message-bubble">
+                        {{ message.content }}
                         <div class="timestamp">
                             {{ message.timestamp|date:"h:i A" }}
                         </div>

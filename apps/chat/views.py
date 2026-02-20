@@ -13,7 +13,6 @@ def ChatRoom(request, username):
         if messages:
             Message.objects.create(sender=request.user, receiver=receiver, content=messages)
   
-    
     messages = Message.objects.filter(sender=request.user, receiver=receiver).order_by('timestamp') | Message.objects.filter(sender=receiver, receiver=request.user).order_by('timestamp')
     
     return render(request, 'chat/chat.html', {'receiver': receiver, 'messages': messages})
