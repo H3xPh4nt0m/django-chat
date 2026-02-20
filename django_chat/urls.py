@@ -20,4 +20,5 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'), #Map the admin site to the /admin/ URL
     path('', include('apps.accounts.urls')), #Include the accounts app URLs
+    path('chat/', include('apps.chat.urls')), #Include the chat app URLs
 ]
