@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User #Import the User model
 from django.contrib.auth import authenticate, login, logout #Import the authentication functions
-from django.db.models import Q #Import the Q object for complex queries
+# from django.db.models import Q #Import the Q object for complex queries
 
 # Create your views here.
 def home(request):
@@ -44,12 +44,14 @@ def user_logout(request):
 def search_users(request):
     query = request.GET.get('q')
     if query:
-        users = User.objects.filter(
-        Q(username__icontains=query) |
-        Q(email__icontains=query) |
-        Q(first_name__icontains=query) |
-        Q(last_name__icontains=query)
-    ) #Search for users whose username contains the query
+    #     users = User.objects.filter(
+    #     Q(username__icontains=query) |
+    #     Q(email__icontains=query) |
+    #     Q(first_name__icontains=query) |
+    #     Q(last_name__icontains=query)
+    # ) #Search for users whose username contains the query
+        users = User.objects.filter(username__icontains=query) | User.objects.filter(email__icontains=query) | User.objects.filter(first_name__icontains=query) | User.objects.filter(last_name__icontains=query)
+        print(users)
     else:
         users = User.objects.all() #If no query, return all users
     return render(request, 'accounts/accounts.html', {'users': users}) #Render the home template with the search results

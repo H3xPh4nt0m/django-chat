@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block title %} Chat Room {% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background-color: #f0f2f5;
+    }
+
+    .chat-wrapper {
+        max-width: 700px;
+        height: 90vh;
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    /* Header */
+    .chat-header {
+        padding: 15px;
+        background: #ffffff;
+        border-bottom: 1px solid #e4e6eb;
+        display: flex;
+        align-items: center;
+    }
+
+    .chat-header img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .chat-header .name {
+        font-weight: 600;
+    }
+
+    .chat-header .status {
+        font-size: 0.8rem;
+        color: #42b72a;
+    }
+
+    /* Chat Body */
+    .chat-body {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background-color: #e4e6eb;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-row {
+        display: flex;
+        margin-bottom: 8px;
+    }
+
+    .message-bubble {
+        padding: 10px 15px;
+        border-radius: 20px;
+        max-width: 90%;
+        font-size: 0.95rem;
+        position: relative;
+        word-wrap: break-word;
+    }
+
+    /* Sent message */
+    .sent {
+        justify-content: flex-end;
+    }
+
+    .sent .message-bubble {
+        background-color: #0084ff;
+        color: white;
+        border-bottom-right-radius: 5px;
+    }
+
+    /* Received message */
+    .received {
+        justify-content: flex-start;
+    }
+
+    .received .message-bubble {
+        background-color: #ffffff;
+        color: #000;
+        border-bottom-left-radius: 5px;
+    }
+
+    .timestamp {
+        font-size: 0.7rem;
+        margin-top: 3px;
+        opacity: 0.7;
+    }
+
+    .sent .timestamp {
+        text-align: right;
+        color: #fff;
+    }
+
+    .received .timestamp {
+        text-align: left;
+        color: #555;
+    }
+
+    /* Footer */
+    .chat-footer {
+        padding: 10px;
+        background: #ffffff;
+        border-top: 1px solid #e4e6eb;
+    }
+
+    .chat-footer input {
+        border-radius: 20px;
+    }
+
+    .chat-footer button {
+        border-radius: 20px;
+    }
+</style>
+
+
+<div class="chat-wrapper">
+
+    <!-- Header -->
+    <div class="chat-header">
+        <img src="https://via.placeholder.com/45" alt="User">
+        <div>
+            <div class="name">John Doe</div>
+            <div class="status">Online</div>
+        </div>
+    </div>
+
+    <!-- Chat Body -->
+    <div class="chat-body" id="chat-body">
+
+        {% for message in messages %}
+
+            {% if message.sender == request.user %}
+                <div class="message-row sent">
+                    <div>
+                        <div class="message-bubble">
+                            {{ message.content }}
+                        </div>
+                        <div class="timestamp">
+                            {{ message.timestamp|date:"h:i A" }}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="message-row received">
+                    <div>
+                        <div class="message-bubble">
+                            {{ message.content }}
+                        </div>
+                        <div class="timestamp">
+                            {{ message.timestamp|date:"h:i A" }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    <!-- Footer -->
+    <div class="chat-footer">
+        <form id="chat-form" class="d-flex" method="post">
+            {% csrf_token %}
+            <input type="text"
+                   name="message"
+                   id="message-input"
+                   class="form-control me-2"
+                   placeholder="Type a message..."
+                   autocomplete="off">
+            <button type="submit" class="btn btn-primary px-4">
+                Send
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    // Auto scroll to bottom
+    var chatBody = document.getElementById("chat-body");
+    chatBody.scrollTop = chatBody.scrollHeight;
+</script>
+
+{% endblock %}
