@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import *
@@ -13,6 +13,8 @@ def ChatRoom(request, username):
         if messages:
             Message.objects.create(sender=request.user, receiver=receiver, content=messages)
   
+        return redirect('ChatRoom', username=username)
+
     messages = Message.objects.filter(sender=request.user, receiver=receiver).order_by('timestamp') | Message.objects.filter(sender=receiver, receiver=request.user).order_by('timestamp')
     
     return render(request, 'chat/chat.html', {'receiver': receiver, 'messages': messages})
