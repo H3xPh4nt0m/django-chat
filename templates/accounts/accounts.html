@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+
+{% block title %} Home Page {% endblock %} 
+
+
+{% block content %}
+
+
+{% if user.is_authenticated %}
+    <br><br> <h2 class="text-center mb-4">Logged in user: {{user.username}}</h2><br><br>
+
+     {% else %}
+     <h2 class="text-center mb-4">Please login to chat</h2><br><br>
+     {% endif %}
+
+<div class="container my-4 d-flex flex-wrap justify-content-start gap-4">
+
+
+    {% for user in users %}    
+
+    {% comment %} Normally we use "user" variable to access the logged in user in the template. But here we are using "user" variable in for loop to access the users in the search results. Thats why we need to use "request.user" to access the logged in user in the template. {% endcomment %}
+    {% if user != request.user %}  {% comment %} here default "user" variable is replaced with for loop "user" variable. Thats why we need to use request.user to identify logged in user"{% endcomment %}
+
+    <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="{{ user.username }}'s profile picture">
+        <div class="card-body">
+            <h5 class="card-title">{{ user.first_name }} {{ user.last_name }}</h5>
+            <p class="card-text">{{ user.email }}</p>
+            <a href="#" class="btn btn-primary">Chat</a>
+        </div>
+    </div>
+    
+    {% endif %}
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}
