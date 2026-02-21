@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User #Import the User model
 from django.contrib.auth import authenticate, login, logout #Import the authentication functions
 # from django.db.models import Q #Import the Q object for complex queries
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+
 
 # Create your views here.
 def home(request):
